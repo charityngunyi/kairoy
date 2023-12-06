@@ -21,13 +21,16 @@
     "@angular/platform-server": "^17.0.0",
     "@angular/router": "^17.0.0",
     "@angular/ssr": "^17.0.5",
+    "@web5/api": "^0.8.2",
     "express": "^4.18.2",
     "primeflex": "^3.3.1",
     "primeng": "^17.0.0-rc.1",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
-    "zone.js": "~0.14.2"
+    "zone.js": "~0.14.2",
+    "@web5/api": "0.8.2"
   },
+  "type": "module",
   "devDependencies": {
     "@angular-devkit/build-angular": "^17.0.5",
     "@angular/cli": "^17.0.5",
@@ -41,6 +44,7 @@
     "karma-coverage": "~2.2.0",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
-    "typescript": "~5.2.2"
+    "typescript": "~5.2.2",
+
   }
 }
