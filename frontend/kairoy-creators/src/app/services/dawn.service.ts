@@ -1,40 +1,81 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { from, Observable } from 'rxjs';
+import { Web5 } from "@web5/api";
+@Injectable({
+  providedIn: 'root',
+})
+export class MyService {
+  createRecord(data: any, protocol: string, schema: string, dataFormat: string): Observable<any> {
 
-import { Content } from './content.model';
-import { web5 } from '@web5/api';
+    const message = {
+      protocol: protocol,
+      schema: schema,
+      dataFormat: dataFormat
+    };
 
-@Injectable({ providedIn: 'root' })
-export class ContentDawnService {
-
-  async storeToDWN(content: Content): Promise<void> {
-    const contentData = JSON.stringify(content);
-    await window.web5.file.write(contentData, `content-${content.id}`);
+    return from(Web5.dwn.records.create({ data, message }));
   }
+  // Query records
+  queryRecords(protocol: string, schema: string, dataFormat: string): Observable<any> {
+    const message = {
+      filter: {
+        protocol: protocol,
+        schema: schema,
+        dataFormat: dataFormat
+      },
+      dateSort: 'publshedAscending',
+    };
 
-  async deleteFromDWN(id: string): Promise<void> {
-    await window.web5.file.delete(`content-${id}`);
+    return from(Web5.dwn.records.query({ message }));
   }
+  // get author records
+  authorQueryRecords(protocol: string, schema: string, dataFormat: string): Observable<any> {
+    from: did,
+    const message = {
+      filter: {
+        protocol: protocol,
+        schema: schema,
+        dataFormat: dataFormat
+      },
+      dateSort: 'publshedAscending',
+    };
 
-  storeContentToDWN(content: Content): Observable<void> {
-    return new Observable((observer) => {
-      this.storeToDWN(content).then(() => {
-        observer.next();
-        observer.complete();
-      }).catch((error) => {
-        observer.error(error);
-      });
-    });
+    return from(Web5.dwn.records.query({ from: did, message }));
   }
+  // query one record
+  queryOneRecord(record: any): Observable<any> {
 
-  deleteContentFromDWN(id: string): Observable<void> {
-    return new Observable((observer) => {
-      this.deleteFromDWN(id).then(() => {
-        observer.next();
-        observer.complete();
-      }).catch((error) => {
-        observer.error(error);
-      });
-    });
+    const message = {
+      filter: {
+        recordId: record.id,
+      }
+    };
+
+    return from(Web5.dwn.records.query({ message }));
+  }
+  // delete a record
+  deleteRecord(record: any): Observable<any> {
+
+    const message = {
+      filter: {
+        recordId: record.id,
+      }
+    };
+
+    return from(Web5.dwn.records.delete({ message }));
+  }
+  // update a record
+  UpdateRecord(data: any, protocol: string, schema: string, dataFormat: string, record): Observable<any> {
+
+    const message = {
+      protocol: protocol,
+      schema: schema,
+      dataFormat: dataFormat,
+      filter: {
+        recordId: record.id,
+      }
+    };
+
+    return from(Web5.dwn.records.update({ data, message }));
   }
 }

@@ -1,45 +1,87 @@
-// User
-export interface User {
-  did: string;
-  username: string;
+// user.model.ts
+export interface Profile {
+  did: number;
+  firstName: string;
+  lastName: string;
+  picture: string; // URL to the profile picture
+  phoneNumber: string;
   email: string;
+  socialLinks: string[]; // Array of social media links
+  portfolioSamples: string[]; // Array of URLs to portfolio samples
+  preferences: string; // You can define a more detailed preferences structure
 }
 
-// User API
-export interface UserAPI {
-  getUserByDID(did: string): Observable<User>;
-  updateUser(user: User): Observable<User>;
-}
-
-// Content
+// content.model.ts
 export interface Content {
-  id: string;
-  authorId: string;
+  id: number;
+  author: string;
+  type: ContentType; // Enum or string representing the content type (Article, Picture, Video, Music, Art, Culture, ShortStory)
+  data: string; // URL or data specific to the content type
+  status: ContentStatus; // Enum or string representing the content status (Draft, Published, etc.)
+}
+
+export enum ContentType {
+  Article = 'Article',
+  Picture = 'Picture',
+  Video = 'Video',
+  Music = 'Music',
+  Art = 'Art',
+  Culture = 'Culture',
+  ShortStory = 'ShortStory',
+}
+
+export enum ContentStatus {
+  Draft = 'Draft',
+  Published = 'Published',
+  Archived = 'Archived',
+}
+
+// community.model.ts
+export interface Community {
+  id: number;
+  name: string;
+  members: number[]; // Array of user IDs
+}
+
+// monetization.model.ts
+export interface Monetization {
+  user: string;
+  methods: MonetizationMethod[]; // Array of monetization methods
+  paymentAccounts: string[]; // Array of linked payment accounts
+}
+
+export interface MonetizationMethod {
+  name: string;
+  description: string;
+}
+
+// learning.model.ts
+export interface LearningResource {
+  id: number;
   title: string;
-  type: string;
-  content: string;
-  publishedDate: Date;
+  type: LearningResourceType; // Enum or string representing the resource type
+  content: string; // URL or content specific to the resource type
 }
 
-// Share
-export interface Share {
-  id: string;
-  contentId: string;
-  sharedWith: string;
-  permission: string;
+export enum LearningResourceType {
+  Workshop = 'Workshop',
+  EducationalContent = 'EducationalContent',
 }
 
-// Content API
-// content-api.interface.ts
+// analytics.model.ts
+export interface Analytics {
+  user: string;
+  performanceMetrics: PerformanceMetrics;
+  audienceEngagement: AudienceEngagement;
+}
 
-export interface ContentAPI {
-  getContents(): Observable<Content[]>;
-  getContent(id: string): Observable<Content>;
-  createContent(content: Content): Observable<Content>;
-  updateContent(id: string, content: Content): Observable<Content>;
-  deleteContent(id: string): Observable<void>;
+export interface PerformanceMetrics {
+  views: number;
+  likes: number;
+  shares: number;
+}
 
-  // DWN-related methods using observables
-  storeContentToDWN(content: Content): Observable<void>;
-  deleteContentFromDWN(id: string): Observable<void>;
+export interface AudienceEngagement {
+  comments: number;
+  collaborations: number;
 }
